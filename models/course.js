@@ -9,6 +9,7 @@ class Course {
         this.img = img;
         this.id = uuid();
     }
+
     toJSON() {
         return ({
             title: this.title,
@@ -17,7 +18,6 @@ class Course {
             id: this.id
         })
     }
-
 
     async save() {
         const courses = await Course.getAll();
@@ -30,7 +30,7 @@ class Course {
                 (err) => {
                     if (err) {
                         reject(err)
-                    }else {
+                    } else {
                         resolve()
                     }
                 }
@@ -39,7 +39,7 @@ class Course {
     }
 
     static getAll() {
-        return new Promise(( resolve, reject) => {
+        return new Promise((resolve, reject) => {
             fs.readFile(
                 path.join(__dirname, '..', 'data', 'courses.json'),
                 'utf-8',
@@ -56,29 +56,29 @@ class Course {
     }
 
     static async getById(id) {
-      const courses = await Course.getAll();
+        const courses = await Course.getAll();
 
-      return courses.find(c => c.id === id)
+        return courses.find(c => c.id === id)
     }
 
-  static async update(course) {
+    static async update(course) {
         const courses = await Course.getAll();
         const idx = courses.findIndex(c => c.id === course.id);
         courses[idx] = course;
 
-       return new Promise((resolve, reject) => {
-           fs.writeFile(
-               path.join(__dirname, '..', 'data', 'courses.json'),
-               JSON.stringify(courses),
-               (err) => {
-                   if (err) {
-                       reject(err)
-                   }else {
-                       resolve()
-                   }
-               }
-           )
-       })
+        return new Promise((resolve, reject) => {
+            fs.writeFile(
+                path.join(__dirname, '..', 'data', 'courses.json'),
+                JSON.stringify(courses),
+                (err) => {
+                    if (err) {
+                        reject(err)
+                    } else {
+                        resolve()
+                    }
+                }
+            )
+        })
 
     }
 
