@@ -22,3 +22,6 @@
     display: flex;
     justify-content: space-between;
 }
+.action-form {
+    margin-bottom: 20px;
+}

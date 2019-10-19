@@ -5,17 +5,34 @@ document.querySelectorAll('.prece').forEach(node => {
     }).format(node.textContent)
 });
 
-const card = document.querySelector('#card');
+const $card = document.querySelector('#card');
 
-if (card) {
-    card.addEventListener('click', (e) => {
+if ($card) {
+    $card.addEventListener('click', (e) => {
         if (e.target.classList.contains('js-remove')) {
             const id = e.target.dataset.id;
-
-
             fetch('/card/delete/' + id, {
                 method: 'delete',
-            }).then(res => res.json()).then(card => console.log(card))
+            }).then(res => res.json())
+                .then(card => {
+                    if (card.courses.length) {
+                        const html = card.courses.map(c => {
+                            return `
+                                <tr>
+                                    <td>${c.title}</td>
+                                    <td>${c.count}</td>
+                                    <td>
+                                        <button class="btn btn-small js-remove" data-id="${c.id}">Delete</button>
+                                    </td>
+                                </tr>
+`
+                        }).join('');
+                        $card.querySelector('tbody').innerHTML = html;
+                        $card.querySelector('.price').textContent = card.price;
+                    } else {
+                        $card.innerHTML = '<p>The card is empty</p>'
+                    }
+                })
         }
     })
 }
